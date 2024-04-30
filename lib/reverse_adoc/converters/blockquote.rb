@@ -4,7 +4,8 @@ module ReverseAdoc
       def to_coradoc(node, state = {})
         id = node['id']
         cite = node['cite']
-        attributes = cite.nil? ? nil :  Coradoc::Document::AttributeList.new("quote", cite)
+        attributes = Coradoc::Document::AttributeList.new
+        attributes.add_positional("quote", cite) if !cite.nil?
         content = treat_children(node, state).strip
         content = ReverseAdoc.cleaner.remove_newlines(content)
         Coradoc::Document::Block::Quote.new(nil, lines: content, attributes: attributes)
